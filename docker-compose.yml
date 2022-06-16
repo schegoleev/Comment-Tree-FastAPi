@@ -1,6 +1,28 @@
 version: '3'
 
 services:
+  app:
+    user: root
+    build:
+      context: ""
+      dockerfile: Dockerfile
+    image: web_server
+    ports:
+      - 8000:8000
+    depends_on:
+      migration:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    command: bash -c "uvicorn crud:app --host 0.0.0.0 --port 8000"
+
+  migration:
+    image: web_server
+    depends_on:
+      db:
+        condition: service_healthy
+    command: bash -c "alembic upgrade head"
+
   db:
     image: postgres:latest
     restart: always
@@ -15,24 +37,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      myApp-network:
-        aliases:
-          - postgresForMyApp
-
-  app:
-    build: .
-    expose:
-      - 8000
-    ports:
-      - 8000:8000
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - myApp-network
-    command: bash -c "alembic upgrade head && uvicorn crud:app --host 0.0.0.0 --port 8000"
-
-networks:
-  myApp-network:
-    driver: bridge
