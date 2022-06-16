@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+pydantic = "*"
+sqlalchemy = "*"
+alembic = "*"
+psycopg2-binary = "*"
+python-multipart = "*"
+pyjwt = "==1.7.1"
+python-decouple = "==3.3"
+starlette = "*"
+strawberry-graphql = {extras = ["debug-server"], version = "*"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

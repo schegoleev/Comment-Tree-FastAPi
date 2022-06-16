@@ -1,2 +1,5 @@
 # Comment-Tree-FastAPi
-Service which handles tree comments
+Start service
+`
+docker-compose up
+`
